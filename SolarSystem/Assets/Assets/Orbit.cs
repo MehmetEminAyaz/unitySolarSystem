@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Orbit : MonoBehaviour
 {
     public GameObject sun;  // Güneþ GameObject'ini referans alýyoruz
-    public float orbitSpeed = 10f;  // Gezegenin dönüþ hýzý
+    public float orbitSpeed = 10f;  // Gezegenin baþlangýç dönüþ hýzý
     public float orbitDistance = 10f;  // Güneþe olan mesafe (yörünge yarýçapý)
     public float rotationSpeed = 30f;  // Gezegenin kendi etrafýnda dönme hýzý
+
+    private float speedMultiplier = 0.1f;  // Hýz çarpaný
 
     void Start()
     {
@@ -30,13 +33,19 @@ public class Orbit : MonoBehaviour
         if (sun != null)
         {
             // Gezegenin her frame'de Güneþ etrafýnda dönmesi
-            transform.RotateAround(sun.transform.position, Vector3.up, orbitSpeed * Time.deltaTime);
+            transform.RotateAround(sun.transform.position, Vector3.up, orbitSpeed * speedMultiplier * Time.deltaTime);
         }
     }
 
     void RotateOnItsOwnAxis()
     {
         // Gezegenin kendi etrafýnda dönmesi (örneðin, Y ekseninde dönmesini saðlýyoruz)
-        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+        transform.Rotate(Vector3.up, rotationSpeed * speedMultiplier * Time.deltaTime);
+    }
+
+    // Hýz çarpanýný dýþarýdan güncelleyebilecek bir fonksiyon
+    public void SetSpeedMultiplier(float multiplier)
+    {
+        speedMultiplier = multiplier;
     }
 }
